@@ -106,7 +106,9 @@ public class HugeInteger{
         }
         
         for (int i = longerLen - (smallerLen+1);i>=0;i--){
-            solution[i+smallerLen] += longerInt[i]%10;
+            int sum = solution[i+smallerLen]+ longerInt[i];
+            solution[i+smallerLen] = sum%10;
+            solution[i+smallerLen-1] = sum/10;
         }
         
 
