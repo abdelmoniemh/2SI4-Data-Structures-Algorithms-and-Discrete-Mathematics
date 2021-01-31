@@ -95,37 +95,20 @@ public class HugeInteger{
         String strSolution = "";
 
         for (int i = 0;i<smallerLen;i++){
-            System.out.printf("Array@Loop[%d]\n", i);
-            System.out.printf("[");
-            for (int x = 0;x<solution.length;x++){
-                System.out.printf("%d, ", solution[x]);
-            }
-            System.out.printf("]\n");
-                
+                            
             int longerIndex = longerInt[longerLen-1-i];
             int shorterIndex = shorterInt[smallerLen-1-i];
-            int current = solution[solution.length-1-i] += (longerIndex+shorterIndex);
-            int carry = 0;
-            if (current >= 10){
-                solution[solution.length-1-i] += (solution[solution.length-1-i] + (longerIndex+shorterIndex)/10)%10;
-                carry =  (longerIndex+shorterIndex)/10;
-            } else {
-                solution[solution.length-1-i] += (longerIndex+shorterIndex)%10;
-            }
-                       
-            int carrySum = solution[solution.length-2-i] + carry;
-            if (carrySum >= 10){
-                solution[solution.length-2-i] += (solution[solution.length-2-i] + (longerIndex+shorterIndex)/10)%10;
-                solution[solution.length-3-i] += (solution[solution.length-2-i] + (longerIndex+shorterIndex)/10)/10;
-            } else {
-                solution[solution.length-2-i] += carrySum;
-            }
-                
+            int index = solution[solution.length-1-i];
+            int sum = longerIndex + shorterIndex + index;
+            solution[solution.length-1-i] = sum%10;
+            solution[solution.length-2-i] = sum/10;
+            
         }
         
-        //for (int i = smallerLen ;i<longerLen;i++){
-        //   solution[i] += longerInt[longerLen - i -1];
-        //}
+        for (int i = longerLen - (smallerLen+1);i>=0;i--){
+            solution[i+smallerLen] += longerInt[i]%10;
+        }
+        
 
         for (int i = 0;i<solution.length;i++){
             strSolution += Integer.toString(solution[i]);
