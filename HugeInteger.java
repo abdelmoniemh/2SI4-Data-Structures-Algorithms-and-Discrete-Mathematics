@@ -56,11 +56,6 @@ public class HugeInteger{
         }
       }
 
-    public void negate(){
-        for (int i = 0;i<HugeInteger.length;i++){
-            HugeInteger[i] *= -1;
-        }
-    }
 
     public HugeInteger abs(){
         String x = HugeInteger.toString();
@@ -178,18 +173,19 @@ public class HugeInteger{
                 //multi carry case
                 int j = 0;
                 int tenX = 1;
-                while(longerInt[longerLen-1-i-j] == 0){
+                while(longerInt[longerLen-i-j-1] == 0){
+                    //System.out.printf(Arrays.toString(solution));
+                    //System.out.printf("\n");
                     tenX *= 10;
-                    if (longerInt[longerLen-1-i-j-1] != 0){
-                        solution[longerLen-1-i-j-1] -= 1;
-                        solution[solution.length-1-i] = (index + longerIndex - shorterIndex + tenX)%10;
-                        int carry = (index + longerIndex - shorterIndex + tenX)/10;
-                        int k = 1;
-                        while (carry > 10){
-                            System.out.printf("index = %d\n", longerLen-1-i-k);
-                            solution[longerLen-1-i-j-k] += carry%10;
+                    //System.out.printf("index = %d\n", longerLen-i-j-2);
+                    if (longerInt[longerLen-i-j-2] != 0){
+                        longerInt[longerLen-i-j-2] += -1;
+                        solution[solution.length-1-i] = (solution[solution.length-1-i] + longerIndex - shorterIndex + tenX)%10;
+                        int carry = (solution[solution.length-1-i] + longerIndex - shorterIndex + tenX)/10;
+                        for (int k = 1;(longerLen-1-i-k)>=0;k++){
+                            //System.out.printf("index = %d\n", carry);
+                            longerInt[longerLen-1-i-k] += carry%10;
                             carry /= 10;
-                            k++; 
                         }
                     }
                     j++;
@@ -199,16 +195,16 @@ public class HugeInteger{
             
         }
  
-        for (int i = 0;i<longerLen-(smallerLen);i++){
+        for (int i = 0;i<longerLen-(smallerLen+1);i++){
             int sum = solution[solution.length-i-smallerLen-1] + longerInt[longerLen-i-smallerLen];
             solution[solution.length-i-smallerLen-1] = sum%10;
             if (sum >= 10){
-                solution[solution.length-i-smallerLen-2] = 1;
-                }
-            
+            solution[solution.length-i-smallerLen-2] += 1;
+            }
         }
-            
-        //System.out.printf(Arrays.toString(solution));
+                
+        //System.out.printf(Arrays.toString(h.HugeInteger));
+        //System.out.printf("\n");
             
         
 
@@ -217,7 +213,7 @@ public class HugeInteger{
         }
 
 
-        //System.out.printf("%s\n",strSolution);
+        System.out.printf("%s\n",strSolution);
         HugeInteger Solution = new HugeInteger(strSolution);
         return Solution;
     }
@@ -231,6 +227,8 @@ public class HugeInteger{
         //return -1 if self < h
         //return 1 if self > h
         //return 0 if self == h
+
+        // broken for case String x = "100000000"; String y = "379";
 
         
         if (java.util.Arrays.equals(HugeInteger, h.HugeInteger) && HugeIntegerSign == h.HugeIntegerSign)
