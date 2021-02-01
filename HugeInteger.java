@@ -170,7 +170,7 @@ public class HugeInteger{
                 solution[solution.length-2-i] -= 1;
                 solution[solution.length-1-i] = (index + longerIndex - shorterIndex + 10);
             } else {
-                //multi carry case
+                //multi carry case //
                 int j = 0;
                 int tenX = 1;
                 while(longerInt[longerLen-i-j-1] == 0){
