@@ -1,4 +1,5 @@
 import java.lang.Math;
+import java.util.Arrays;
 public class HugeInteger{
 
     private int[] HugeInteger;
@@ -8,7 +9,7 @@ public class HugeInteger{
         // convert string val into huge integer
         // only - sign is allowed (first character only) 
         // any other discrepencies throw exception
-
+        //System.out.println(Val+"\n");
         int fl = Val.length()-1;
         if (Val.charAt(0) == '-'){ // defines sign of integer
             HugeIntegerSign = '-';
@@ -146,8 +147,9 @@ public class HugeInteger{
             return sub;
         }
         
+        HugeIntegerSign = '+';
         
-        int[] solution = new int[(HugeInteger.length>=h.HugeInteger.length)?HugeInteger.length:h.HugeInteger.length];//whichever one is longer
+        int[] solution = new int[(HugeInteger.length>=h.HugeInteger.length)?HugeInteger.length+5:h.HugeInteger.length+5];//whichever one is longer
         int smallerLen = (HugeInteger.length>=h.HugeInteger.length)?h.HugeInteger.length:HugeInteger.length;
         int longerLen = (HugeInteger.length>=h.HugeInteger.length)?HugeInteger.length:h.HugeInteger.length;
         int[] longerInt = (HugeInteger.length>=h.HugeInteger.length)?HugeInteger:h.HugeInteger; // this
@@ -155,51 +157,67 @@ public class HugeInteger{
         String strSolution = "";
         
         for (int i = 0;i<smallerLen;i++){
-            int lonIndex = longerLen-1-i;
-            int sorIndex = smallerLen-1-i;
-            if (longerInt[lonIndex]>=shorterInt[sorIndex]){
-                solution[solution.length-1-i] += longerInt[lonIndex]-shorterInt[sorIndex];
-            } else {
-                int index = 0;
-                int tenX = 1;
-                System.out.printf("tenx = %d\n", tenX);
-                if (longerInt[lonIndex-1] == 0){
-                    while (longerInt[lonIndex-index] == 0){
-                        System.out.printf("tenx = %d\n", tenX);
-                        tenX *= 10;
-                        try {
-                            if (longerInt[lonIndex-index] != 0){
-                                longerInt[lonIndex-index] -= 1;
-                                tenX *= 10;
-                                break;
-                            } 
-                        } finally {
-                                //System.out.printf("logic error");
-                            }
-                        index++;
-                    }
-                    for (int j =0;j<index;j++) {
-                        solution[solution.length-1-i-j] += (tenX + longerInt[lonIndex]-shorterInt[sorIndex])%10;
-                    }
-                } else {
-                    longerInt[lonIndex-1] -= 1;
-                    longerInt[lonIndex] += 10;
-                    solution[solution.length-1-i] += longerInt[lonIndex]-shorterInt[sorIndex];
+            int longerIndex = longerInt[longerLen-1-i];
+            int shorterIndex = shorterInt[smallerLen-1-i];
+            int index = solution[solution.length-1-i];
+            if (longerIndex >= shorterIndex){
+                //normal case
+                solution[solution.length-1-i] = (index + longerIndex - shorterIndex)%10;
+                try{
+                    solution[solution.length-2-i] = (index + longerIndex - shorterIndex)/10;
+                } catch (Exception ArrayIndexOutOfBoundsException) {
+                    ;
                 }
+                    
+
+            } else if (longerIndex < shorterIndex && longerInt[longerLen-1-i-1] > 0) {
+                //single carry case
+                solution[solution.length-2-i] -= 1;
+                solution[solution.length-1-i] = (index + longerIndex - shorterIndex + 10);
+            } else {
+                //multi carry case
+                int j = 0;
+                int tenX = 1;
+                while(longerInt[longerLen-1-i-j] == 0){
+                    tenX *= 10;
+                    if (longerInt[longerLen-1-i-j-1] != 0){
+                        solution[longerLen-1-i-j-1] -= 1;
+                        solution[solution.length-1-i] = (index + longerIndex - shorterIndex + tenX)%10;
+                        int carry = (index + longerIndex - shorterIndex + tenX)/10;
+                        int k = 1;
+                        while (carry > 10){
+                            System.out.printf("index = %d\n", longerLen-1-i-k);
+                            solution[longerLen-1-i-j-k] += carry%10;
+                            carry /= 10;
+                            k++; 
+                        }
+                    }
+                    j++;
+                }
+
             }
-                
+            
         }
+ 
+        for (int i = 0;i<longerLen-(smallerLen);i++){
+            int sum = solution[solution.length-i-smallerLen-1] + longerInt[longerLen-i-smallerLen];
+            solution[solution.length-i-smallerLen-1] = sum%10;
+            if (sum >= 10){
+                solution[solution.length-i-smallerLen-2] = 1;
+                }
+            
+        }
+            
+        //System.out.printf(Arrays.toString(solution));
+            
         
-        //for (int i = smallerLen ;i<longerLen;i++){
-        //    solution[i] += longerInt[longerLen-i-1];
-        //}
 
         for (int i = 0;i<solution.length;i++){
             strSolution += Integer.toString(solution[i]);
         }
 
 
-        System.out.printf("%s\n",strSolution);
+        //System.out.printf("%s\n",strSolution);
         HugeInteger Solution = new HugeInteger(strSolution);
         return Solution;
     }
