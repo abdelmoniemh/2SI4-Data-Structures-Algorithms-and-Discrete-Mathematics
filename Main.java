@@ -9,8 +9,10 @@ public class Main {
         HugeInteger number2 = new HugeInteger(y);
         BigInteger n1 = new BigInteger(x);
         BigInteger n2 = new BigInteger(y);
-        HugeInteger X1 = new HugeInteger(number.subtract(number2).toString());
         HugeInteger X2 = new HugeInteger(n1.subtract(n2).toString());
+        System.out.println(X2);
+        HugeInteger X1 = new HugeInteger(number.subtract(number2).toString());
+        System.out.println(X1);
         
         //HugeInteger BigIntSum = new HugeInteger(n1.subtract(n2).toString());
         System.out.printf("Comparison to bigInt: %d\n",X1.compareTo(X2));

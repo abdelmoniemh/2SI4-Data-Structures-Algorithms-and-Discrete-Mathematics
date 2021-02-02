@@ -1,0 +1,16 @@
+add last digit of both numbers + current number in array at index
+if sum >= 10
+    sum%10 = current unit
+    sum/10 rounded down = [unit - 1]
+
+
+12345923
+00000077
+      -4
+
+10101
+00123
+
+00000
+smallerLen = 2
+longerLen - (smallerLen+1)
