@@ -10,6 +10,7 @@ public class HugeInteger{
         // only - sign is allowed (first character only) 
         // any other discrepencies throw exception
         //System.out.println(Val+"\n");
+
         int fl = Val.length()-1;
         if (Val.charAt(0) == '-'){ // defines sign of integer
             HugeIntegerSign = '-';
@@ -18,6 +19,11 @@ public class HugeInteger{
             HugeIntegerSign = '+';
         }
         
+        if (Val.length() == 0){
+            //System.out.println("\nInvalid Input\n");
+            throw new NumberFormatException();
+        }
+
         for (int i=0;i<fl-1;i++){ //checks for leading zeros // -1 to allow 0 to be a valid input
             if (Val.charAt(0) != '0')
                 break;
@@ -31,7 +37,7 @@ public class HugeInteger{
             try{
                 HugeInteger[i] = Integer.parseInt(Character.toString(Val.charAt(i)));
             } catch (Exception  NumberFormatException){
-               System.out.println("\nInvalid Input\n");
+               //System.out.println("\nInvalid Input\n");
                throw NumberFormatException;
             }
             
@@ -46,6 +52,11 @@ public class HugeInteger{
         HugeInteger = new int[n];
         HugeIntegerSign = '+';
       
+        if (n <= 0){
+            //System.out.println("\nInvalid Input\n");
+            throw new NumberFormatException();
+        }
+
         for (int i = 0; i<n ;i++){
             if (i == 0){
                 HugeInteger[i] = (int)(Math.random()*(9)) + 1;
@@ -150,45 +161,33 @@ public class HugeInteger{
         int[] longerInt = (HugeInteger.length>=h.HugeInteger.length)?HugeInteger:h.HugeInteger; // this
         int[] shorterInt = (HugeInteger.length>=h.HugeInteger.length)?h.HugeInteger:HugeInteger; // other
         String strSolution = "";
-        
-        for (int i = 0;i<smallerLen;i++){
-            int longerIndex = longerInt[longerLen-1-i];
-            int shorterIndex = shorterInt[smallerLen-1-i];
-            int index = solution[solution.length-1-i];
-            solution[solution.length-1-i] = (index + Math.abs(longerIndex - shorterIndex))%10;
-            if (shorterIndex>longerIndex){
-                try{
-                    longerInt[this.HugeInteger.length-2-i] -= 1;
-                } catch (Exception ArrayIndexOutOfBoundsException) {
-                    ;
-                }
-            }
-                
-        }
 
+    
+        for (int i = 0; i<longerLen; i++) {
+            int longerIndex = longerInt[longerLen-1-i];
             
-        for (int i = 0;i<longerLen-(smallerLen+1);i++){
-            int sum = solution[solution.length-i-smallerLen-1] + longerInt[longerLen-i-smallerLen];
-            solution[solution.length-i-smallerLen-1] = sum%10;
-            if (sum >= 10){
-            solution[solution.length-i-smallerLen-2] += 1;
+
+            if (i < smallerLen){
+                int shorterIndex = shorterInt[smallerLen-1-i];    
+                if (longerIndex >= shorterIndex){
+                    // no carry case
+                    solution[solution.length-1-i] += (longerIndex - shorterIndex);
+                } else {
+                    // carry case
+                    longerInt[longerLen-1-i-1] -= 1;
+                    longerIndex += 10;
+                    solution[solution.length-1-i] += (longerIndex - shorterIndex);
+                }
+            } else {
+                solution[solution.length-1-i] += longerIndex;
             }
         }
-                
-        //System.out.printf(Arrays.toString(h.HugeInteger));
-        //System.out.printf("\n");
-            
-        
 
         for (int i = 0;i<solution.length;i++){
             strSolution += Integer.toString(solution[i]);
         }
 
-
-        System.out.printf("%s\n",strSolution);
         HugeInteger Solution = new HugeInteger(strSolution);
-        //System.out.println(Solution);
-        //System.out.println(Solution.HugeIntegerSign);
         return Solution;
     }
 
