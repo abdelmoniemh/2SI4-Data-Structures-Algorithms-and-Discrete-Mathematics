@@ -69,7 +69,7 @@ public class HugeInteger{
 
 
     public HugeInteger abs(){
-        String x = HugeInteger.toString();
+        String x = this.toString();
         if (x.charAt(0) == '-')
             x = x.substring(1);
         HugeInteger X = new HugeInteger(x);
@@ -163,32 +163,39 @@ public class HugeInteger{
         String strSolution = "";
 
     
-        for (int i = 0; i<longerLen; i++) {
-            int longerIndex = longerInt[longerLen-1-i];
-            
+            for (int i = 0; i<longerLen; i++) {
+                int longerIndex = longerInt[longerLen-1-i];
+                
 
-            if (i < smallerLen){
-                int shorterIndex = shorterInt[smallerLen-1-i];    
-                if (longerIndex >= shorterIndex){
-                    // no carry case
-                    solution[solution.length-1-i] += (longerIndex - shorterIndex);
+                if (i < smallerLen){
+                    int shorterIndex = shorterInt[smallerLen-1-i];    
+                    if (longerIndex >= shorterIndex){
+                        // no carry case
+                        solution[solution.length-1-i] += (longerIndex - shorterIndex);
+                    } else {
+                        // carry case
+                        longerInt[longerLen-1-i-1] -= 1;
+                        longerIndex += 10;
+                        solution[solution.length-1-i] += (longerIndex - shorterIndex);
+                    }
                 } else {
-                    // carry case
-                    longerInt[longerLen-1-i-1] -= 1;
-                    longerIndex += 10;
-                    solution[solution.length-1-i] += (longerIndex - shorterIndex);
+                    solution[solution.length-1-i] += longerIndex;
                 }
-            } else {
-                solution[solution.length-1-i] += longerIndex;
             }
-        }
 
-        for (int i = 0;i<solution.length;i++){
-            strSolution += Integer.toString(solution[i]);
-        }
+            for (int i = solution.length-1; i>=0 ;i--){
+                if (solution[i]<0){
+                    solution[i-1] -= 1;
+                    solution[i] += 10;
+                }
+            }
 
-        HugeInteger Solution = new HugeInteger(strSolution);
-        return Solution;
+            for (int i = 0;i<solution.length;i++){
+                strSolution += Integer.toString(solution[i]);
+            }
+            //System.out.println(strSolution);
+            HugeInteger Solution = new HugeInteger(strSolution);
+            return Solution;
     }
 
     public HugeInteger multiply(HugeInteger h) {
