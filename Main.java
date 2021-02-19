@@ -1,20 +1,28 @@
 import java.math.BigInteger;
 public class Main {
     public static void main(String[] args) {
-        String x = "100000000";
-        String y = "099999999";
-        //String y = "894276582937089472389467895438905734857396073894563505367856348748743";
-        //String x = "8197253647645762123564876245637214536758293847536452367836478235923478235498239236483";
+        String x = "-9";
+        String y = "-0";
+
+
         HugeInteger number = new HugeInteger(x);
         HugeInteger number2 = new HugeInteger(y);
         BigInteger n1 = new BigInteger(x);
         BigInteger n2 = new BigInteger(y);
-        HugeInteger X2 = new HugeInteger(n1.subtract(n2).toString());
-        System.out.println(X2);
-        HugeInteger X1 = new HugeInteger(number.subtract(number2).toString());
-        System.out.println(X1);
+
+
+        //HugeInteger Y2 = new HugeInteger(n1.add(n2).toString());
+        //HugeInteger Y1 = new HugeInteger(number.add(number2).toString());
+
         
+        HugeInteger X2 = new HugeInteger(n1.multiply(n2).toString());
+        HugeInteger X1 = new HugeInteger(number.multiply(number2).toString());
+        //System.out.println(X1);
+        int test = X1.compareTo(X2);
         //HugeInteger BigIntSum = new HugeInteger(n1.subtract(n2).toString());
-        System.out.printf("Comparison to bigInt: %d\n",X1.compareTo(X2));
-	}
+        System.out.printf("subtract Comparison to bigInt: %d\n",test);
+        //System.out.printf("add Comparison to bigInt: %d\n",Y1.compareTo(Y2));
+
+
+    }
 }

@@ -24,7 +24,7 @@ public class HugeInteger{
             throw new NumberFormatException();
         }
 
-        for (int i=0;i<fl-1;i++){ //checks for leading zeros // -1 to allow 0 to be a valid input
+        for (int i=0;i<fl;i++){ //checks for leading zeros // -1 to allow 0 to be a valid input
             if (Val.charAt(0) != '0')
                 break;
             else
@@ -33,7 +33,7 @@ public class HugeInteger{
             
         fl = Val.length();
         HugeInteger = new int[fl];
-        for (int i = 0;i<fl;i++){ // populates array with values
+        for (int i = 0;i<fl-1;i++){ // populates array with values
             try{
                 HugeInteger[i] = Integer.parseInt(Character.toString(Val.charAt(i)));
             } catch (Exception  NumberFormatException){
@@ -199,8 +199,37 @@ public class HugeInteger{
     }
 
     public HugeInteger multiply(HugeInteger h) {
-        HugeInteger solution = new HugeInteger("123");
-        return solution;
+        if (this.toString().equals("0") || h.toString().equals("0")){
+            return new HugeInteger("0");
+        }
+        int[] solution = new int[HugeInteger.length+h.HugeInteger.length+5];//whichever one is longer
+        int smallerLen = (HugeInteger.length>=h.HugeInteger.length)?h.HugeInteger.length:HugeInteger.length;
+        int longerLen = (HugeInteger.length>=h.HugeInteger.length)?HugeInteger.length:h.HugeInteger.length;
+        int[] longerInt = (HugeInteger.length>=h.HugeInteger.length)?HugeInteger:h.HugeInteger; // this
+        int[] shorterInt = (HugeInteger.length>=h.HugeInteger.length)?h.HugeInteger:HugeInteger; // other
+        String strSolution = "";
+        int index = solution.length;
+        for (int i = 0; i<smallerLen; i++){
+            for (int j = 0; j<longerLen; j++){
+                int operations = (solution[solution.length-1-j-i] + shorterInt[smallerLen-1-i]*longerInt[longerLen-1-j]);
+                solution[solution.length-1-j-i] = operations%10;
+                solution[solution.length-2-j-i] += operations/10;
+                 
+            }
+        }
+        
+        for (int i = 0;i<solution.length;i++){
+            strSolution += Integer.toString(solution[i]);
+        }
+        HugeInteger Solution = new HugeInteger(strSolution);
+        if ((HugeIntegerSign == '+' && h.HugeIntegerSign == '-' || HugeIntegerSign == '-' && h.HugeIntegerSign == '+'))
+            Solution.HugeIntegerSign = '-';
+        else if  (HugeIntegerSign == '-' && h.HugeIntegerSign == '-' || HugeIntegerSign == '+' && h.HugeIntegerSign == '+')
+            Solution.HugeIntegerSign = '+';
+        else 
+            Solution.HugeIntegerSign = '+';
+
+        return Solution;
     }
 
     public int compareTo(HugeInteger h) { /// test for leading zeros
