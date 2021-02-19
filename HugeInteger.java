@@ -24,7 +24,7 @@ public class HugeInteger{
             throw new NumberFormatException();
         }
 
-        for (int i=0;i<fl;i++){ //checks for leading zeros // -1 to allow 0 to be a valid input
+        for (int i=0;i<fl-1;i++){ //checks for leading zeros // -1 to allow 0 to be a valid input
             if (Val.charAt(0) != '0')
                 break;
             else
@@ -33,7 +33,7 @@ public class HugeInteger{
             
         fl = Val.length();
         HugeInteger = new int[fl];
-        for (int i = 0;i<fl-1;i++){ // populates array with values
+        for (int i = 0;i<fl;i++){ // populates array with values
             try{
                 HugeInteger[i] = Integer.parseInt(Character.toString(Val.charAt(i)));
             } catch (Exception  NumberFormatException){
@@ -41,6 +41,9 @@ public class HugeInteger{
                throw NumberFormatException;
             }
             
+        }
+        if (Val.equals("0")){
+            HugeIntegerSign = '+';
         }
     }
 

@@ -7,6 +7,7 @@ public class Main {
 
         HugeInteger number = new HugeInteger(x);
         HugeInteger number2 = new HugeInteger(y);
+        System.out.println(number2.toString());
         BigInteger n1 = new BigInteger(x);
         BigInteger n2 = new BigInteger(y);
 
