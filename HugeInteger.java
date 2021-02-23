@@ -71,7 +71,7 @@ public class HugeInteger{
       }
 
 
-    public HugeInteger abs(){
+    public HugeInteger absoluteValue(){ // helper funtion that returns the absolute value of a HugeInteger
         String x = this.toString();
         if (x.charAt(0) == '-')
             x = x.substring(1);
@@ -82,32 +82,32 @@ public class HugeInteger{
     public HugeInteger add(HugeInteger h) {
 
         if (HugeIntegerSign == '+' && h.HugeIntegerSign == '-'){ //(+)+(-) == (+)-(+)
-            HugeInteger absH = h.abs();
+            HugeInteger absH = h.absoluteValue();
             return this.subtract(absH);
         }
         if (HugeIntegerSign == '-' && h.HugeIntegerSign == '+'){ //(-)+(+) == (+)-(+)
-            HugeInteger absThis = this.abs();
+            HugeInteger absThis = this.absoluteValue();
             return h.subtract(absThis);
         }
         if (HugeIntegerSign == '-' && h.HugeIntegerSign == '-'){ //(-)+(-) == -((+)+(+))
-            HugeInteger absH = h.abs();
-            HugeInteger absThis = this.abs();
+            HugeInteger absH = h.absoluteValue();
+            HugeInteger absThis = this.absoluteValue();
             HugeInteger added = absThis.add(absH);
             added.HugeIntegerSign = '-';
             return added;
         }
                 
         int[] solution = new int[h.HugeInteger.length + HugeInteger.length];
-        int smallerLen = (HugeInteger.length>=h.HugeInteger.length)?h.HugeInteger.length:HugeInteger.length;
+        int shorterLen = (HugeInteger.length>=h.HugeInteger.length)?h.HugeInteger.length:HugeInteger.length;
         int longerLen = (HugeInteger.length>=h.HugeInteger.length)?HugeInteger.length:h.HugeInteger.length;
         int[] longerInt = (HugeInteger.length>=h.HugeInteger.length)?HugeInteger:h.HugeInteger;
         int[] shorterInt = (HugeInteger.length>=h.HugeInteger.length)?h.HugeInteger:HugeInteger;
         String strSolution = "";
 
-        for (int i = 0;i<smallerLen;i++){
+        for (int i = 0;i<shorterLen;i++){ // handles addition of overlaping unitplaces
                             
             int longerIndex = longerInt[longerLen-1-i];
-            int shorterIndex = shorterInt[smallerLen-1-i];
+            int shorterIndex = shorterInt[shorterLen-1-i];
             int index = solution[solution.length-1-i];
             int sum = longerIndex + shorterIndex + index;
             solution[solution.length-1-i] = sum%10;
@@ -115,10 +115,10 @@ public class HugeInteger{
             
         }
         
-        for (int i = longerLen - (smallerLen+1);i>=0;i--){
-            int sum = solution[i+smallerLen]+ longerInt[i];
-            solution[i+smallerLen] = sum%10;
-            solution[i+smallerLen-1] = sum/10;
+        for (int i = longerLen - (shorterLen+1);i>=0;i--){ // handles the unique unitplaces from the larger number
+            int sum = solution[i+shorterLen]+ longerInt[i];
+            solution[i+shorterLen] = sum%10;
+            solution[i+shorterLen-1] = sum/10;
         }
         
 
@@ -137,18 +137,18 @@ public class HugeInteger{
             return new HugeInteger("0");
         } 
         else if (HugeIntegerSign == '+' && h.HugeIntegerSign == '-'){ //(+)-(-) == (+)+(+)
-            HugeInteger absH = h.abs();
+            HugeInteger absH = h.absoluteValue();
             return this.add(absH);
         }
         else if (HugeIntegerSign == '-' && h.HugeIntegerSign == '+'){ //(-)-(+) == -((+)+(+))
-            HugeInteger absThis = this.abs();
+            HugeInteger absThis = this.absoluteValue();
             HugeInteger added = absThis.add(h);
             added.HugeIntegerSign = '-';
             return added;
         }
         else if (HugeIntegerSign == '-' && h.HugeIntegerSign == '-'){ //-x--y == y-x
-            HugeInteger lead = h.abs();
-            return lead.subtract(this.abs());
+            HugeInteger lead = h.absoluteValue();
+            return lead.subtract(this.absoluteValue());
         } 
         else if (this.compareTo(h) == -1) {
             HugeInteger sub = h.subtract(this);
@@ -159,7 +159,7 @@ public class HugeInteger{
         HugeIntegerSign = '+';
         
         int[] solution = new int[(HugeInteger.length>=h.HugeInteger.length)?HugeInteger.length+5:h.HugeInteger.length+5];//whichever one is longer
-        int smallerLen = (HugeInteger.length>=h.HugeInteger.length)?h.HugeInteger.length:HugeInteger.length;
+        int shorterLen = (HugeInteger.length>=h.HugeInteger.length)?h.HugeInteger.length:HugeInteger.length;
         int longerLen = (HugeInteger.length>=h.HugeInteger.length)?HugeInteger.length:h.HugeInteger.length;
         int[] longerInt = (HugeInteger.length>=h.HugeInteger.length)?HugeInteger:h.HugeInteger; // this
         int[] shorterInt = (HugeInteger.length>=h.HugeInteger.length)?h.HugeInteger:HugeInteger; // other
@@ -170,8 +170,8 @@ public class HugeInteger{
                 int longerIndex = longerInt[longerLen-1-i];
                 
 
-                if (i < smallerLen){
-                    int shorterIndex = shorterInt[smallerLen-1-i];    
+                if (i < shorterLen){
+                    int shorterIndex = shorterInt[shorterLen-1-i];    
                     if (longerIndex >= shorterIndex){
                         // no carry case
                         solution[solution.length-1-i] += (longerIndex - shorterIndex);
@@ -182,7 +182,7 @@ public class HugeInteger{
                         solution[solution.length-1-i] += (longerIndex - shorterIndex);
                     }
                 } else {
-                    solution[solution.length-1-i] += longerIndex;
+                    solution[solution.length-1-i] += longerIndex; // copy from longer input when done subtracting
                 }
             }
 
@@ -206,17 +206,17 @@ public class HugeInteger{
             return new HugeInteger("0");
         }
         int[] solution = new int[HugeInteger.length+h.HugeInteger.length+5];//whichever one is longer
-        int smallerLen = (HugeInteger.length>=h.HugeInteger.length)?h.HugeInteger.length:HugeInteger.length;
+        int shorterLen = (HugeInteger.length>=h.HugeInteger.length)?h.HugeInteger.length:HugeInteger.length;
         int longerLen = (HugeInteger.length>=h.HugeInteger.length)?HugeInteger.length:h.HugeInteger.length;
         int[] longerInt = (HugeInteger.length>=h.HugeInteger.length)?HugeInteger:h.HugeInteger; // this
         int[] shorterInt = (HugeInteger.length>=h.HugeInteger.length)?h.HugeInteger:HugeInteger; // other
         String strSolution = "";
-        int index = solution.length;
-        for (int i = 0; i<smallerLen; i++){
-            for (int j = 0; j<longerLen; j++){
-                int operations = (solution[solution.length-1-j-i] + shorterInt[smallerLen-1-i]*longerInt[longerLen-1-j]);
+        int index = solution.length; //  gradeschool multiplication approach
+        for (int i = 0; i<shorterLen; i++){  // smaller number
+            for (int j = 0; j<longerLen; j++){ // bigger number
+                int operations = (solution[solution.length-1-j-i] + shorterInt[shorterLen-1-i]*longerInt[longerLen-1-j]);
                 solution[solution.length-1-j-i] = operations%10;
-                solution[solution.length-2-j-i] += operations/10;
+                solution[solution.length-2-j-i] += operations/10; //carry
                  
             }
         }
@@ -225,7 +225,7 @@ public class HugeInteger{
             strSolution += Integer.toString(solution[i]);
         }
         HugeInteger Solution = new HugeInteger(strSolution);
-        if ((HugeIntegerSign == '+' && h.HugeIntegerSign == '-' || HugeIntegerSign == '-' && h.HugeIntegerSign == '+'))
+        if ((HugeIntegerSign == '+' && h.HugeIntegerSign == '-' || HugeIntegerSign == '-' && h.HugeIntegerSign == '+')) // handles the sign of the result
             Solution.HugeIntegerSign = '-';
         else if  (HugeIntegerSign == '-' && h.HugeIntegerSign == '-' || HugeIntegerSign == '+' && h.HugeIntegerSign == '+')
             Solution.HugeIntegerSign = '+';
@@ -240,21 +240,21 @@ public class HugeInteger{
         //return 1 if self > h
         //return 0 if self == h
 
-        // broken for case String x = "100000000"; String y = "379";
+        //
 
         
-        if (java.util.Arrays.equals(HugeInteger, h.HugeInteger) && HugeIntegerSign == h.HugeIntegerSign)
+        if (java.util.Arrays.equals(HugeInteger, h.HugeInteger) && HugeIntegerSign == h.HugeIntegerSign)// handle the signs first 
             return 0;
         if (HugeIntegerSign == '+' && h.HugeIntegerSign == '-')
             return 1;
         if (HugeIntegerSign == '-' && h.HugeIntegerSign == '+')
             return -1;
         if (HugeIntegerSign == '+' && h.HugeIntegerSign == '+'){
-            if (HugeInteger.length > h.HugeInteger.length)
+            if (HugeInteger.length > h.HugeInteger.length)// handles based on length
                 return 1;
             if (HugeInteger.length < h.HugeInteger.length)
                 return -1;
-            if (HugeInteger.length == h.HugeInteger.length){
+            if (HugeInteger.length == h.HugeInteger.length){// if lenght == start at first number of each look for the bigger number
                 for (int i = 0;i<HugeInteger.length;i++){
                     if (HugeInteger[i] > h.HugeInteger[i])
                         return 1;
