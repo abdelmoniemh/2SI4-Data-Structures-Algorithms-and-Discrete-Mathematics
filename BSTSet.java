@@ -1,4 +1,5 @@
 import java.lang.Math;
+import java.util.Queue;
 import java.util.Stack;
 public class BSTSet {
 
@@ -92,6 +93,18 @@ public class BSTSet {
 		
 	}
 
+	public boolean isIn(int[] array, int v){
+		boolean found = false;
+
+		for (int i = 0;i<array.length;i++){
+			if (v==array[i]){
+				found = true;
+			}
+		}
+
+		return found;
+	}
+
 	public void add(int v) {
 		TNode reference = root;
 		if (!isIn(v)){
@@ -170,18 +183,21 @@ public class BSTSet {
 		}
 		return reference.element;
 	}
-
 	
 	public BSTSet union(BSTSet s) {
-		BSTSet Union = new BSTSet();
-		Union.root = s.root;
+		int[] input = InOrderTransversal(s);
+		BSTSet Union = new BSTSet(input);
 		int[] self = InOrderTransversal(this);
 
 		for (int i = 0;i<size(root);i++){
 			Union.add(self[i]);
 		}
-		
-		return Union;
+
+		int[] result = InOrderTransversal(Union);
+		result = ArraytoSortedSet(result);
+		BSTSet finalSet = new BSTSet(result);
+
+		return finalSet;
 	}
 
 	public int[] InOrderTransversal(BSTSet set){
@@ -235,14 +251,45 @@ public class BSTSet {
 			finalSet[x] = Integer.parseInt(Intersection[x]);
 		}
 
+		
 		BSTSet newSet = new BSTSet(finalSet);
 		return newSet;
 	}
 	
 	public BSTSet difference(BSTSet s) {
+		int[] self = InOrderTransversal(this); //returns sorted array
+		int[] input = InOrderTransversal(s);
+		String result = "";
+		int i = 0, j = 0;
 		
+		while (i < self.length && j < input.length) { 
+            if (self[i] < input[j] && !isIn(input, self[i])){// if j is greater increase i
+				result += Integer.toString(self[i]) + " "; 
+                i++; 
+			}  else if (input[j] < self[i] && !isIn(self, input[j])) {// if i is greater increase j
+				result += Integer.toString(input[j]) + " ";
+                j++; 
+			}	
+            else { // both same add to string storing intersection and increase both
+                
+				j++;
+                i++; 
+            } 
+        }
+		if (result == "" ){
+			return new BSTSet();
+		}
+
+
+		String[] Difference = result.split(" ");
+		int[] finalSet = new int[Difference.length];
 		
-		return new BSTSet();
+		for (int x = 0;x<finalSet.length;x++){
+			finalSet[x] = Integer.parseInt(Difference[x]);
+		}
+
+		BSTSet newSet = new BSTSet(finalSet);
+		return newSet;
 	}
 
 	public int size(TNode node) {
@@ -264,10 +311,21 @@ public class BSTSet {
 	}
 	
 	public int height() {
-		
-		int depth = 0;
-		
-		return depth;
+		TNode reference = root;
+		if (reference == null)
+			return -1;
+		else {
+			BSTSet left = new BSTSet();
+			left.root = reference.left;
+			BSTSet right = new BSTSet();
+			right.root = reference.right;
+			
+			if (left.height()>right.height()){
+				return (1+left.height());
+			} else {
+				return (1+right.height());
+			}
+		}
 	}
 	
 	public void printBSTSet() {
@@ -300,11 +358,34 @@ public class BSTSet {
 	}	
 	
 	public void printNonRec() {
-		
+		int[] output = InOrderTransversal(this);
+		for (int i = 0;i<output.length;i++){
+			System.out.printf(" %d, ",output[i]);
+		}
 	}
 	
 	public void printLevelOrder() {
-		
+		TNode reference = root;
+		MyQueue<TNode> Queue = new MyQueue<TNode>();
+
+		if (reference == null)
+			return;
+
+		Queue.enqueue(reference);
+		while(!Queue.isEmpty()){
+			//int size = Queue.getSize();
+			
+			TNode current = Queue.dequeue();
+			System.out.printf(" %d, ",current.element);
+			if (current.left != null){
+				Queue.enqueue(current.left);
+			}
+			if (current.right != null){
+				Queue.enqueue(current.right);
+			}
+			
+		}
+		return;
 		
 	}
 	

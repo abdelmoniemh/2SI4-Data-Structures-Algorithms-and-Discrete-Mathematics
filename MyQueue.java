@@ -35,21 +35,24 @@ public class MyQueue<E> {
     }
 
     public void enqueue(E e) {
-        end.next = new QueueNode<E>(e, null);
-        end = end.next;
+        QueueNode<E> node = new QueueNode<E>(e, null);
+        if (end != null){
+            end.next = node;
+        }
+        end = node;
+        if (front.element == null){
+            front = end;
+        }
     }
 
     public E dequeue() throws NoSuchElementException {
-        if (isEmpty())
+        if (front == null)
             throw new NoSuchElementException();
-        else {
-            if (end == front.next){
-                end = front;
-            }
-            E val = front.next.element;
-            front.next = front.next.next;
-            return val;
+        E element = front.element;
+        front = front.next;
+        if (front == null){
+            end = null;
         }
-
+        return element;
     }
 }

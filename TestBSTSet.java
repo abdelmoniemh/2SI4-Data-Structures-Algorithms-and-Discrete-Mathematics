@@ -1,3 +1,6 @@
+//If you are using a different package name, change lab3 to the appropriate package name from your project
+
+
 public class TestBSTSet {
 	public static void main(String[] args) {
 		double FinalMarks=0;
@@ -5,7 +8,6 @@ public class TestBSTSet {
 		
 		//int[] d1 = {1,2}; //no repetitions
 		int[] d1 = {7, 10, 16, 3, 2, 11}; //no repetitions
-		//int[] d1 = {1,2,3};
 		int[] d2 = {5, 6, 5, 1, 2, 2, 2, 4, 9, 8, 20, 32, 3, 17};//with repetitions
 		int v1 = 11; //value in set d1
 		int v2 = 14; //value not in set d1
@@ -165,7 +167,7 @@ public class TestBSTSet {
 		System.out.println("Test8---remove(v2)--v2 was not in the set; no change" );
 		try {
 		a1 = new BSTSet(d1);
-		if (a1.remove(v2) == false)	
+		if (a1.remove(v2)== false)	
 		{
 			System.out.println("remove method for false: Pass (+2)");
 			FinalMarks=FinalMarks+2;
@@ -182,7 +184,7 @@ public class TestBSTSet {
 		System.out.println("Test9---remove(v1)--v1 was in the set; it is removed" );
 		try {
 		a1 = new BSTSet(d1);
-		if (a1.remove(v4) == true)	
+		if (a1.remove(v4)== true)	
 		{
 			System.out.println("remove method for true: Pass (+2)");
 			FinalMarks=FinalMarks+2;
@@ -462,7 +464,7 @@ public class TestBSTSet {
 		}
 		System.out.println("\n");
 
-		System.out.println("Test20---      () + height()" );
+		System.out.println("Test20---size() + height()" );
 		try {
 		a1 = new BSTSet(d1);
 		
