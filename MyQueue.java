@@ -5,23 +5,17 @@ public class MyQueue<E> {
         private E element;
         private QueueNode<E> next;
 
-        public QueueNode(E element, QueueNode<E> next) {
+        public QueueNode(E element) {
             this.element = element;
-            this.next = next;
         }
     }
 
-    private QueueNode<E> front;
-    private QueueNode<E> end;
-
-    public MyQueue() {
-        front = new QueueNode<E>(null, null);
-        end = new QueueNode<E>(null, null);
-    }
+    private QueueNode<E> first;
+    private QueueNode<E> last;
 
     public int getSize() {
-        int size = 0;
-        QueueNode<E> p = front;
+        int size = 1;
+        QueueNode<E> p = first;
         while (p.next != null) {
             p = p.next;
             size++;
@@ -30,28 +24,28 @@ public class MyQueue<E> {
     }
 
     public boolean isEmpty() {
-        return (front == end);
+        return (first == null);
 
     }
 
     public void enqueue(E e) {
-        QueueNode<E> node = new QueueNode<E>(e, null);
-        if (end != null){
-            end.next = node;
+        QueueNode<E> Node = new QueueNode<E>(e);
+        if (last != null){
+            last.next = Node;
         }
-        end = node;
-        if (front.element == null){
-            front = end;
+        last = Node;
+        if (first == null){
+            first = last;
         }
     }
 
     public E dequeue() throws NoSuchElementException {
-        if (front == null)
+        if (first == null)
             throw new NoSuchElementException();
-        E element = front.element;
-        front = front.next;
-        if (front == null){
-            end = null;
+        E element = first.element;
+        first = first.next;
+        if (first == null){
+            last = null;
         }
         return element;
     }

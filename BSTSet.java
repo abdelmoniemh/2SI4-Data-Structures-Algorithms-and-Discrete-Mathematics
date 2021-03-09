@@ -184,7 +184,7 @@ public class BSTSet {
 		return reference.element;
 	}
 	
-	public BSTSet union(BSTSet s) { //O(n^2)
+	public BSTSet union(BSTSet s) { //O(n^2) nlog(n)
 		if (this.height() == -1){
 			return s;
 		}
@@ -228,7 +228,7 @@ public class BSTSet {
 		return result;
 	}
 	
-	public BSTSet intersection(BSTSet s) { //O(n+m)
+	public BSTSet intersection(BSTSet s) { //O((n*m))
 		int[] self = InOrderTransversal(this); //returns sorted array
 		int[] input = InOrderTransversal(s);
 		String result = "";
@@ -262,7 +262,7 @@ public class BSTSet {
 		return newSet;
 	}
 	
-	public BSTSet difference(BSTSet s) { //(O(n))
+	public BSTSet difference(BSTSet s) { //(O(n*m))
 		int[] self = InOrderTransversal(this); //returns sorted array
 		int[] input = InOrderTransversal(s);
 		String result = "";
@@ -371,6 +371,7 @@ public class BSTSet {
 	}
 	
 	public void printLevelOrder() {
+		System.out.println("\nlevel order below\n");
 		TNode reference = root;
 		MyQueue<TNode> Queue = new MyQueue<TNode>();
 
@@ -384,10 +385,12 @@ public class BSTSet {
 			TNode current = Queue.dequeue();
 			System.out.printf(" %d, ",current.element);
 			if (current.left != null){
-				Queue.enqueue(current.left);
+				TNode left = current.left;
+				Queue.enqueue(left);
 			}
 			if (current.right != null){
-				Queue.enqueue(current.right);
+				TNode right = current.right;
+				Queue.enqueue(right);
 			}
 			
 		}
