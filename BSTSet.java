@@ -1,4 +1,5 @@
 import java.lang.Math;
+import java.util.Stack;
 public class BSTSet {
 
 	private TNode root;
@@ -115,22 +116,22 @@ public class BSTSet {
 		TNode reference = root;
 		if (isIn(v)){
 		
-		if (v > reference.element){
+		if (v > reference.element){ // recursivly solve for right side if v> root
 			BSTSet right= new BSTSet();
 			right.root = reference.right;
 			right.remove(v);
 			reference.right = right.root;
 			root = reference;
 			return true;
-		} else if (v< reference.element){
+		} else if (v< reference.element){ // recursively solve for left side if v< root
 			BSTSet left = new BSTSet();
 			left.root = reference.left;
 			left.remove(v);
 			reference.left = left.root;
 			root = reference;
 			return true;
-		} else {
-			if (reference.element == v && reference.right == null && reference.left == null){
+		} else { //arrived at node to be removed
+			if (reference.element == v && reference.right == null && reference.left == null){ // leaf case
 				reference = null;
 				root = reference;
 				return true;
@@ -138,11 +139,11 @@ public class BSTSet {
 				reference = reference.left;
 				root = reference;
 				return true;
-			} else if (reference.element == v && reference.right != null && reference.left == null){
+			} else if (reference.element == v && reference.right != null && reference.left == null){ // case of one child
 				reference = reference.right;
 				root = reference;
 				return true;
-			} else {
+			} else { // case of two childs
 				BSTSet right = new BSTSet();
 				right.root = reference.right;
 				root.element = right.MinValue();
@@ -172,15 +173,70 @@ public class BSTSet {
 
 	
 	public BSTSet union(BSTSet s) {
+		BSTSet Union = new BSTSet();
+		Union.root = s.root;
+		int[] self = InOrderTransversal(this);
+
+		for (int i = 0;i<size(root);i++){
+			Union.add(self[i]);
+		}
 		
-		
-		return new BSTSet();
+		return Union;
+	}
+
+	public int[] InOrderTransversal(BSTSet set){
+		int[] result = new int[set.size(set.root)];
+		int i = 0;
+		MyStack<TNode> Stack = new MyStack<TNode>();
+		TNode node = set.root;
+
+		while(node != null || Stack.size() > 0){
+
+			while (node != null){
+				Stack.push(node);
+				node = node.left;
+			}
+
+			node = Stack.pop();
+			result[i] = node.element;
+			node = node.right;
+			i++;
+		}
+
+		return result;
 	}
 	
 	public BSTSet intersection(BSTSet s) {
+		int[] self = InOrderTransversal(this); //returns sorted array
+		int[] input = InOrderTransversal(s);
+		String result = "";
+		int i = 0, j = 0;
 		
+		while (i < self.length && j < input.length) { 
+            if (self[i] < input[j])  // if j is greater increase i 
+                i++; 
+            else if (input[j] < self[i]) // if i is greater increase j
+                j++; 
+            else { // both same add to string storing intersection and increase both
+                result += Integer.toString(self[i]) + " ";
+				j++;
+                i++; 
+            } 
+        }
+		if (result == "" ){
+			return new BSTSet();
+		}
+
+
+		String[] Intersection = result.split(" ");
+		int[] finalSet = new int[Intersection.length];
 		
-		return new BSTSet();
+		for (int x = 0;x<finalSet.length;x++){
+			finalSet[x] = Integer.parseInt(Intersection[x]);
+		}
+
+		BSTSet newSet = new BSTSet(finalSet);
+		return newSet;
 	}
 	
 	public BSTSet difference(BSTSet s) {
@@ -189,11 +245,22 @@ public class BSTSet {
 		return new BSTSet();
 	}
 
+	public int size(TNode node) {
+		TNode reference = node;
+		if (reference == null)
+			return 0;
+		else{
+			return (size(node.left) + size(node.right) + 1);
+		}
+	}
+
 	public int size() {
-		
-		int length = 0;
-		
-		return length;
+		TNode reference = root;
+		if (reference == null)
+			return 0;
+		else{
+			return (size(reference.left) + size(reference.right) + 1);
+		}
 	}
 	
 	public int height() {

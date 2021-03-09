@@ -462,7 +462,7 @@ public class TestBSTSet {
 		}
 		System.out.println("\n");
 
-		System.out.println("Test20---size() + height()" );
+		System.out.println("Test20---      () + height()" );
 		try {
 		a1 = new BSTSet(d1);
 		

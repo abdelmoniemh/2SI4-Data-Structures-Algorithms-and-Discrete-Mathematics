@@ -1,4 +1,4 @@
-
+import java.util.EmptyStackException;
 public class MyStack<E> {
     private static class StackNode<E>{
         private E element;
@@ -40,6 +40,15 @@ public class MyStack<E> {
             head = head.next;
             return (e);
         }
+    }
+    public int size(){
+        int size =0;
+        StackNode<E> ref = head;
+        while (ref != null){
+            ref = ref.next;
+            size++;
+        }
+    return size;
     }
 }
 
