@@ -14,7 +14,7 @@ public class BSTSet {
 		root = BSTSet(SortedSet);
 	}
 
-	public TNode BSTSet(int[] SortedSet) {
+	public TNode BSTSet(int[] SortedSet) { //O(n)
 		if (SortedSet ==null)
 			return null;
 		int mid = (int)Math.ceil(SortedSet.length/2);
@@ -69,11 +69,11 @@ public class BSTSet {
 		return substring;
 	}
 	
-	public TNode getRoot(){
+	public TNode getRoot(){ // O(1)
 		return root;
 	}
 
-	public boolean isIn(int v) {
+	public boolean isIn(int v) { // Average O(log(n)) worst O(n)
 		TNode reference = root;
 		if (reference == null){
 			return false;
@@ -93,7 +93,7 @@ public class BSTSet {
 		
 	}
 
-	public boolean isIn(int[] array, int v){
+	public boolean isIn(int[] array, int v){ // O(n) helper method to check if element in array
 		boolean found = false;
 
 		for (int i = 0;i<array.length;i++){
@@ -105,7 +105,7 @@ public class BSTSet {
 		return found;
 	}
 
-	public void add(int v) {
+	public void add(int v) {  // Average O(log(n)) worst O(n)
 		TNode reference = root;
 		if (!isIn(v)){
 			if (reference == null)
@@ -125,7 +125,7 @@ public class BSTSet {
 		root = reference;
 	}
 	
-	public boolean remove(int v) {
+	public boolean remove(int v) { // worst O(n)
 		TNode reference = root;
 		if (isIn(v)){
 		
@@ -176,7 +176,7 @@ public class BSTSet {
 		
 	}
 
-	public int MinValue(){
+	public int MinValue(){ // O(logN) // O(n)
 		TNode reference = root;
 		while(reference.left != null){
 			reference = reference.left;
@@ -184,7 +184,13 @@ public class BSTSet {
 		return reference.element;
 	}
 	
-	public BSTSet union(BSTSet s) {
+	public BSTSet union(BSTSet s) { //O(n^2)
+		if (this.height() == -1){
+			return s;
+		}
+		if (s.height() == -1){
+			return this;
+		}
 		int[] input = InOrderTransversal(s);
 		BSTSet Union = new BSTSet(input);
 		int[] self = InOrderTransversal(this);
@@ -194,13 +200,13 @@ public class BSTSet {
 		}
 
 		int[] result = InOrderTransversal(Union);
-		result = ArraytoSortedSet(result);
+		result = ArraytoSortedSet(result); // O(n^2)
 		BSTSet finalSet = new BSTSet(result);
 
 		return finalSet;
 	}
 
-	public int[] InOrderTransversal(BSTSet set){
+	public int[] InOrderTransversal(BSTSet set){ // O(n)
 		int[] result = new int[set.size(set.root)];
 		int i = 0;
 		MyStack<TNode> Stack = new MyStack<TNode>();
@@ -222,7 +228,7 @@ public class BSTSet {
 		return result;
 	}
 	
-	public BSTSet intersection(BSTSet s) {
+	public BSTSet intersection(BSTSet s) { //O(n+m)
 		int[] self = InOrderTransversal(this); //returns sorted array
 		int[] input = InOrderTransversal(s);
 		String result = "";
@@ -256,7 +262,7 @@ public class BSTSet {
 		return newSet;
 	}
 	
-	public BSTSet difference(BSTSet s) {
+	public BSTSet difference(BSTSet s) { //(O(n))
 		int[] self = InOrderTransversal(this); //returns sorted array
 		int[] input = InOrderTransversal(s);
 		String result = "";
@@ -310,7 +316,7 @@ public class BSTSet {
 		}
 	}
 	
-	public int height() {
+	public int height() { // O(n)
 		TNode reference = root;
 		if (reference == null)
 			return -1;
