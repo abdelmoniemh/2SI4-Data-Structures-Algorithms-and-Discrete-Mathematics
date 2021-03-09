@@ -1,4 +1,3 @@
-import java.util.EmptyStackException;
 
 public class MyStack<E> {
     private static class StackNode<E>{
