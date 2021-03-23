@@ -1,22 +1,40 @@
 import java.math.BigInteger;
+import java.util.ArrayList;
 
 public class HashTableLin {
 
     private Integer[] table;
-    private int[] keys;
     private int tableSize;
     private int elements = 0;
     private double load = 0;
     private int maxNum;
+    private ArrayList<Integer> keys = new ArrayList<Integer>();
 
     
 
+    private boolean isPrime(int n) {
+        if (n <= 3) return n > 1;
+        else if (n % 2 == 0 || n % 3 == 0) return false;
+        int i = 5;
+        while (i * i <= n) {
+            if (n % i == 0 || n % (i + 2) == 0) {
+                return false;
+            }
+            i += 6;
+        }
+
+        return true;
+    }
+
     public HashTableLin(int maxNum, double load){
 
-        BigInteger tableSize = BigInteger.valueOf((int)Math.floor(maxNum/load));
-        tableSize = tableSize.nextProbablePrime();
-        table = new Integer[tableSize.intValue()];
-        this.tableSize = tableSize.intValue();
+        int tableSize = (int)Math.floor(maxNum/load);
+
+        while(!isPrime(tableSize))
+            tableSize++;
+
+        table = new Integer[tableSize];
+        this.tableSize = tableSize;
         this.load = load;
         this.maxNum = maxNum;
     }
@@ -33,6 +51,7 @@ public class HashTableLin {
         } while(table[hash] != null);
 
         table[hash] = n;
+        keys.add(n);
 
         elements++;
         float currentFactor = (float)elements;
@@ -42,7 +61,7 @@ public class HashTableLin {
         }
     }
 
-    public int insertCount(int n){
+    public int insertCount(int n){   
         if (isIn(n))
             return isInCount(n);
         
@@ -56,24 +75,26 @@ public class HashTableLin {
         table[hash] = n;
 
         elements++;
-        float currentFactor = (float)elements;
+
+        float currentFactor = (float)(elements);
         currentFactor /= (float)tableSize;
-        if (currentFactor > load){
-            rehash();
-        }
+        if (currentFactor > load)
+            fastRehash();
         return i;
     }
+
+    
     
     public int isInCount(int n){
         int probe = 0;
-        for (int i = 0;i<tableSize;i++){
-            if (table[i] != null)
-                probe++;
-                if (table[i] == (Integer)n)
-                    break;
+        for (int i:keys){
+            if (i == n)
+                break;
+            probe += 1;
         }
         return probe;
     }
+
 
     private void rehash(){
         BigInteger rehashLen =  BigInteger.valueOf(2*maxNum);
@@ -93,9 +114,26 @@ public class HashTableLin {
 
     }
 
+    private void fastRehash(){
+        HashTableLin rehash = new HashTableLin(2*maxNum, load);
+
+        for (int i:keys){
+            rehash.insert(i);            
+        }
+        this.table = rehash.table;
+        this.keys = rehash.keys;
+        this.tableSize = rehash.tableSize;
+        this.elements = rehash.elements;
+        this.load = rehash.load;
+        this.maxNum = rehash.maxNum;
+
+    }
+
+
+
     public boolean isIn(int n){
-        for (int i = 0;i<table.length;i++){
-            if (table[i] == (Integer)n){
+        for (Integer i:keys){
+            if (i == (Integer)n){
                 return true; 
             }
                                
@@ -103,6 +141,7 @@ public class HashTableLin {
         
         return false;
     }
+
 
     public void printKeys(){
         for (int i = 0;i<tableSize;i++){

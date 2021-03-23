@@ -240,7 +240,7 @@ public class TestHashTable {
         System.out.println("# of Keys = " + HTest.getNumKeys() + "\n");
         HTest.printKeysAndIndexes();
         System.out.println("************************************************************************");
-        
+         
         System.out.println("******************Testing Quadratic Probing*********************"); 
     	System.out.println("\n");
     	
@@ -423,7 +423,7 @@ public class TestHashTable {
 		}    
         System.out.println(HTestQ.isIn(f) + "\n");
         System.out.println("************************************************************************");
-		
+      
         //Test insert with probing counts
         System.out.println("***************Test 10a - Inserts and Probing Count to insert new key " + 58+"***************");
         int temQ= HTestQ.insertCount(g);
@@ -452,7 +452,7 @@ public class TestHashTable {
     
         System.out.println("***************Test 10b - Probing count when the key already IsIn***************");
         try {
-			if (HTestQ.getTableSize()==29 && HTestQ.insertCount(29)==2 && HTestQ.getNumKeys()==7 ) {
+			if (HTestQ.getTableSize()==29 && HTestQ.insertCount(c)==2 && HTestQ.getNumKeys()==7 ) {
 					TotalMarks= TotalMarks+3; 
 					System.out.println("Probing count when the key already IsIn: Pass (+3)" );
 			}
@@ -477,7 +477,7 @@ public class TestHashTable {
         System.out.println("***************Test 11 - Probing Simulations for Linear Probing Hash Table***************");
         
         Random r = new Random();
-        int numKeys = 10000, val, runs = 100, duplicates;  //Variables to store # keys, # runs, # duplicate inputs
+        int numKeys = 100000, val, runs =100, duplicates;  //Variables to store # keys, # runs, # duplicate inputs
         double loadFactor, countLoop, unsL, sL, probeCount = 0,probeunsucces = 0;    //Variables to store load factor, theoretical probes, and counting
         System.out.println("************************************************************************");
         
@@ -520,12 +520,15 @@ public class TestHashTable {
         
         System.out.println("\n");
         System.out.println("************************************************************************");
-       
+		
       //Simulations to measure the average number of probes for successful search for each lambda (0.1~ 0.9)
+
+
+	  
         System.out.println("***************Test 12 - Probing Simulations for Quadratic Probing Hash Table***************");
         
         Random rQ = new Random();
-        int numKeysQ = 10000, valQ, runsQ = 100, duplicatesQ;  //Variables to store # keys, # runs, # duplicate inputs
+        int numKeysQ = 100000, valQ, runsQ = 100, duplicatesQ;  //Variables to store # keys, # runs, # duplicate inputs
         double loadFactorQ, countLoopQ, unsLQ, sLQ, probeCountQ = 0,probeunsuccesQ = 0;           //Variables to store load factor, and counting
         System.out.println("************************************************************************");
         
@@ -569,7 +572,7 @@ public class TestHashTable {
         System.out.println("************************************************************************");
         
         
-	    //Comment out the bonus part if required method is not defined/*
+	    //Comment out the bonus part if required method is not defined
         //Bonus method starts
 		/*
         System.out.println("*****Bonus Test 13 - Probing unsuccessful searches Linear Probing Hash Table*****"); 
@@ -619,7 +622,7 @@ public class TestHashTable {
     		}
 	        
 	      System.out.printf("Load Factor : %.1f,  Average # probes : %.3f,  Theoretical # probes (LP) : %.3f \n", loadFactor,probeunsucces, unsL);
-	    } */
+	    }
       BonusMarks=BonusMarks+1;
       System.out.println("-------------------------------Bonus Marks--------------------------------" );
       System.out.println("\n");
@@ -630,7 +633,7 @@ System.out.println("-------------------------------Total Marks------------------
 System.out.println("\n");
 System.out.println("Total marks for tests (1-12): " + TotalMarks + " /70.0"); 
 
-		
+
 	}
 }
 
