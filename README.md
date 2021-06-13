@@ -1,4 +1,4 @@
-All of the code in this repository was written by Abdelmoniem Hassan for COMPENG 2SI4 during the Winter 2021 semester.
+All of the code in this repository except the test suites were written by Abdelmoniem Hassan for COMPENG 2SI4 during the Winter 2021 semester.
 
 
 •	Lab 1/2 is an implementation of the BigInteger Java library.
